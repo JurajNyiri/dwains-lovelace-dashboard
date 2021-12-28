@@ -1,12 +1,14 @@
 import { hass } from "card-tools/src/hass";
 import { createCard } from "card-tools/src/lovelace-element";
 
-const bases = [customElements.whenDefined('hui-masonry-view'), customElements.whenDefined('hc-lovelace')];
+const bases = [
+  customElements.whenDefined("hui-masonry-view"),
+  customElements.whenDefined("hc-lovelace"),
+];
 Promise.race(bases).then(() => {
-
-  const LitElement = customElements.get('hui-masonry-view')
-    ? Object.getPrototypeOf(customElements.get('hui-masonry-view'))
-    : Object.getPrototypeOf(customElements.get('hc-lovelace'));
+  const LitElement = customElements.get("hui-masonry-view")
+    ? Object.getPrototypeOf(customElements.get("hui-masonry-view"))
+    : Object.getPrototypeOf(customElements.get("hc-lovelace"));
 
   const html = LitElement.prototype.html;
 
@@ -20,26 +22,28 @@ Promise.race(bases).then(() => {
     setConfig(config) {
       this._config = JSON.parse(JSON.stringify(config));
 
-      if(this._config.card){
+      if (this._config.card) {
         this.card = createCard(this._config.card);
         this.card.hass = hass();
       }
     }
 
-    renderNav(){
-      if(this._config.subtitle){
+    renderNav() {
+      if (this._config.subtitle) {
         return html`
-        <div
-              style="cursor: pointer"
+          <div style="cursor: pointer;" @click="${this._handleClick}">
+            <ha-icon
+              style="height: 40px; width: 40px; margin-left: -6px;"
+              .icon="${this._config.icon}"
+              id="icon"
+            ></ha-icon>
+            <h2
               @click="${this._handleClick}"
+              style="display:inline !important; cursor: pointer;"
             >
-              <ha-icon
-                style="height: 30px; width: 30px; margin-left: -6px;"
-                .icon="${this._config.icon}"
-                id="icon"
-              ></ha-icon>
-              <h2>${this._config.subtitle}</h2>
-            </div>
+              ${this._config.subtitle}
+            </h2>
+          </div>
         `;
       } else {
         return html``;
@@ -52,7 +56,7 @@ Promise.race(bases).then(() => {
           <div class="container">
             <div class="one">
               ${this.renderNav()}
-              <h1 style="padding-top: ${this._config.subtitle ? "0px" : "16px"};">${this._config.title}</h1>
+              <h1 style="padding-top: 16px;">${this._config.title}</h1>
             </div>
             <div class="two">
               ${this.card}
@@ -62,16 +66,19 @@ Promise.race(bases).then(() => {
     }
 
     set hass(hass) {
-      if(!this.card) return;
+      if (!this.card) return;
       this.card.hass = hass;
     }
 
     _handleClick() {
       let e;
       let path = window.location.pathname;
-      let nav_path = path.substring(0, path.lastIndexOf('/')) + "/"+this._config.navigation_path;
-      window.history.pushState(null, '', nav_path);
-      e = new Event('location-changed', { composed: true });
+      let nav_path =
+        path.substring(0, path.lastIndexOf("/")) +
+        "/" +
+        this._config.navigation_path;
+      window.history.pushState(null, "", nav_path);
+      e = new Event("location-changed", { composed: true });
       e.detail = { replace: false };
       window.dispatchEvent(e);
     }
@@ -82,7 +89,7 @@ Promise.race(bases).then(() => {
           ha-card {
             background-color: var(--app-header-background-color2);
             color: var(--app-header-text-color, white);
-            margin-top: -2px;
+            margin-top: 10px;
             padding-left: 16px;
             box-shadow: none;
             border-radius: 0px;
@@ -141,7 +148,7 @@ Promise.race(bases).then(() => {
 
   if (!customElements.get("dwains-header-card")) {
     customElements.define("dwains-header-card", DwainsHeaderCard);
-    const pjson = require('../package.json');
+    const pjson = require("../package.json");
     console.info(
       `%c DWAINS-HEADER-CARD \n%c    Version ${pjson.version}    `,
       "color: #2fbae5; font-weight: bold; background: black",

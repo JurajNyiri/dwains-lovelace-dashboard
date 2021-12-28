@@ -1,14 +1,15 @@
-const bases = [customElements.whenDefined('hui-masonry-view'), customElements.whenDefined('hc-lovelace')];
+const bases = [
+  customElements.whenDefined("hui-masonry-view"),
+  customElements.whenDefined("hc-lovelace"),
+];
 Promise.race(bases).then(() => {
-
-  const LitElement = customElements.get('hui-masonry-view')
-    ? Object.getPrototypeOf(customElements.get('hui-masonry-view'))
-    : Object.getPrototypeOf(customElements.get('hc-lovelace'));
+  const LitElement = customElements.get("hui-masonry-view")
+    ? Object.getPrototypeOf(customElements.get("hui-masonry-view"))
+    : Object.getPrototypeOf(customElements.get("hc-lovelace"));
 
   const html = LitElement.prototype.html;
 
   const css = LitElement.prototype.css;
-
 
   const createError = (error, config) => {
     return createThing("hui-error-card", {
@@ -63,7 +64,6 @@ Promise.race(bases).then(() => {
         });
       }
     }
-
 
     setConfig(config) {
       if (
@@ -142,13 +142,11 @@ Promise.race(bases).then(() => {
       }
 
       return html`
-      <div style="${this._config.css}">
-        <div class="wrapper ${padding}">
-          <div class="row">
-            ${this._refCards}
+        <div style="${this._config.css}">
+          <div class="wrapper ${padding}">
+            <div class="row">${this._refCards}</div>
           </div>
         </div>
-      </div>
       `;
     }
 
@@ -226,6 +224,23 @@ Promise.race(bases).then(() => {
             flex: 0 0 auto;
             padding-right: 0.25rem;
             padding-left: 0.25rem;
+          }
+          .mx-1 {
+            margin-right: 5px;
+            margin-left: 5px;
+          }
+          .mx-2 {
+            margin-left: 10px;
+            margin-right: 10px;
+          }
+          .mx-3 {
+            margin-left: 20px;
+            margin-right: 20px;
+          }
+          .jn-center {
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
           }
           .col-xs {
             -webkit-box-flex: 1;
@@ -972,10 +987,11 @@ Promise.race(bases).then(() => {
 
           .wrapper {
             overflow: hidden;
-            padding: 0px;
+            padding: 11px;
           }
           .wrapper.padding {
             padding: 11px;
+            padding-top: 25px;
           }
           .row {
             overflow: hidden;
@@ -1160,7 +1176,7 @@ Promise.race(bases).then(() => {
 
   if (!customElements.get("dwains-flexbox-card")) {
     customElements.define("dwains-flexbox-card", DwainsFlexboxCard);
-    const pjson = require('../package.json');
+    const pjson = require("../package.json");
     console.info(
       `%c DWAINS-FLEXBOX-CARD \n%c    Version ${pjson.version}    `,
       "color: #2fbae5; font-weight: bold; background: black",
